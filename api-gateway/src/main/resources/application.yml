@@ -1,0 +1,51 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: user-service
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/canhxuan/users/**
+
+            - id: identity-service
+              uri: lb://IDENTITY-SERVICE
+              predicates:
+                - Path=/canhxuan/auth/**
+
+            - id: product-service
+              uri: lb://PRODUCT-SERVICE
+              predicates:
+                - Path=/canhxuan/products/**, /canhxuan/categories/**
+
+            - id: cart-service
+              uri: lb://CART-SERVICE
+              predicates:
+                - Path=/canhxuan/cart/**
+
+            - id: order-service
+              uri: lb://ORDER-SERVICE
+              predicates:
+                - Path=/canhxuan/orders/**
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+jwt:
+  secret: F3BBAF3F3B6E3A4C93B89655B38DAF3BBAF3F3B6E3A4C93B89655B38DA
